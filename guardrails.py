@@ -9,7 +9,7 @@ from agents import (Agent,
                     TResponseInputItem,
                     GuardrailFunctionOutput,
                     InputGuardrailTripwireTriggered,
-                    OutputGuardrailTripwireTriggered,
+                    InputGuardrailResult,
                     input_guardrail,
                     output_guardrail,
                     )
@@ -18,6 +18,7 @@ from  openai.types.responses import ResponseTextDeltaEvent
 import os
 import asyncio
 from dataclasses import dataclass
+import json
 
 set_tracing_disabled(disabled=True)
 _=load_dotenv(find_dotenv())
@@ -87,7 +88,7 @@ async def main():
         )
         print("Final Output:",output.final_output)
     except InputGuardrailTripwireTriggered as e:
-        print("Input Guardrail Tripwire Triggered:",e)
+        print("Guardrail Tripwire Triggered:\n",json.dumps(e.guardrail_result.output.output_info.__dict__, indent=2))
    
 
 if __name__=="__main__":
